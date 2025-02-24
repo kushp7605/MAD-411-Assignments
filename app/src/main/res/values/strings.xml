@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">KushPatel_0859776_AndroidAssignment6</string>
+    <string name="enter_your_name">enter_your_name</string>
+    <string name="submit">Submit</string>
 </resources>
