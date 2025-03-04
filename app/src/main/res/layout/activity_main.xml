@@ -36,17 +36,17 @@
         android:padding="15dp" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:id="@+id/buttonAddExpense"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/submit"
-        android:textSize="30sp" />
+        android:text="@string/add_expense"
+        android:textSize="20sp"
+        android:padding="15dp"/>
 
-    <TextView
-        android:id="@+id/finalResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="30sp" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="15dp"/>
 
 </LinearLayout>
