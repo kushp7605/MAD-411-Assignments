@@ -14,14 +14,26 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/please_enter_your_name"
-        android:textSize="30sp" />
+        android:text="@string/expense_tracker"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:paddingBottom="16dp"/>
 
     <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
+        android:id="@+id/editTextExpenseName"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp" />
+        android:hint="@string/expense_name"
+        android:textSize="20sp" />
+    
+    <EditText
+        id="@+id/editTextExpenseAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/expense_amount"
+        android:inputType="numberDecimal"
+        android:textSize="20sp"
+        android:padding="15dp" />
 
     <Button
         android:id="@+id/button"
