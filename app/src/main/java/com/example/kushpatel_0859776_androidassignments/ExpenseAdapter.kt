@@ -17,9 +17,11 @@ class ExpenseAdapter(private val expenseList: MutableList<Expense>,
     // ViewHolder class for holding the views of each expense item
     class ExpenseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // TextView for expense name
-        val textViewExpenseName: TextView = itemView.findViewById(R.id.editTextExpenseName)
+        val textViewExpenseName: TextView = itemView.findViewById(R.id.textViewExpenseName)
         // TextView for expense amount
-        val textViewExpenseAmount: TextView = itemView.findViewById(R.id.editTextExpenseAmount)
+        val textViewExpenseAmount: TextView = itemView.findViewById(R.id.textViewExpenseAmount)
+        // TextView for expense date
+        val textViewExpenseDate: TextView = itemView.findViewById(R.id.textViewExpenseDate)
         // Button for deleting the expense
         val deleteButton: Button = itemView.findViewById(R.id.deleteButton)
 
@@ -39,6 +41,8 @@ class ExpenseAdapter(private val expenseList: MutableList<Expense>,
         holder.textViewExpenseName.text = expense.name
         // Set expense amount
         holder.textViewExpenseAmount.text = "$${expense.amount}"
+        // Set expense date
+        holder.textViewExpenseDate.text = expense.date
         // Set delete button click listener
         holder.deleteButton.setOnClickListener { onDeleteButton(position) }
     }
