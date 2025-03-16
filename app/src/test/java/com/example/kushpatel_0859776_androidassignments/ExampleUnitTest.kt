@@ -1,4 +1,4 @@
-package com.example.kushpatel_0859776_androidassignment6
+package com.example.kushpatel_0859776_androidassignments
 
 import org.junit.Test
 
