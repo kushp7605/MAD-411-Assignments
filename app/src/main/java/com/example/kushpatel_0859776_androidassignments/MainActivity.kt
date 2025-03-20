@@ -3,6 +3,7 @@ package com.example.kushpatel_0859776_androidassignments
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.CalendarView
 import android.widget.DatePicker
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+        Log.d("MainActivityLifecycle", "onCreate called")
 
 
         val editTextExpenseName = findViewById<EditText>(R.id.editTextExpenseName)
@@ -76,13 +78,36 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-
-
             expenseList.add(Expense(name, amount, date))
             expenseAdapter.notifyItemInserted(expenseList.size - 1)
 
             editTextExpenseName.text.clear()
             editTextExpenseAmount.text.clear()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("MainActivityLifecycle", "onStart called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("MainActivityLifecycle", "onResume called")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("MainActivityLifecycle", "onPause called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("MainActivityLifecycle", "onStop called")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("MainActivityLifecycle", "onDestroy called")
     }
 }
