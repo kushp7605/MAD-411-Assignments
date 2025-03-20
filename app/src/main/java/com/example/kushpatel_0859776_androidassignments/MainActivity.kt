@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.kushpatel_0859776_androidassignment6.R
 import java.util.Calendar
 
+// Data class representing an expense with a name and amount
+data class Expense(val name: String, val amount: Double, val date: String)
+
 class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var expenseAdapter: ExpenseAdapter
@@ -59,17 +62,17 @@ class MainActivity : AppCompatActivity() {
             val date = textViewDate.text.toString()
 
             if(name.isEmpty()) {
-                Toast.makeText(this, "Please enter an expense name", Toast.LENGTH_SHORT).show()
+                editTextExpenseName.error = "Please enter an expense name"
                 return@setOnClickListener
             }
 
             if(amount == null || amount <= 0) {
-                Toast.makeText(this, "Please enter a valid expense amount", Toast.LENGTH_SHORT).show()
+                editTextExpenseAmount.error = "Please enter a valid amount"
                 return@setOnClickListener
             }
 
             if (date == "Select Date" || date.isEmpty()) {
-                Toast.makeText(this, "Please select a date", Toast.LENGTH_SHORT).show()
+                textViewDate.setTextColor(resources.getColor(android.R.color.holo_red_dark))
                 return@setOnClickListener
             }
 
