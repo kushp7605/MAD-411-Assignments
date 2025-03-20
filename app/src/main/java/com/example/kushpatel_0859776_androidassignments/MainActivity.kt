@@ -77,6 +77,7 @@ class MainActivity : AppCompatActivity() {
             }
 
 
+
             expenseList.add(Expense(name, amount, date))
             expenseAdapter.notifyItemInserted(expenseList.size - 1)
 
