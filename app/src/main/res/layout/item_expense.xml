@@ -7,11 +7,11 @@
     android:gravity="center_vertical" >
 
     <!-- Expense details container -->
-    <LinearLayout
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:layout_height="match_parent">
+
+        <TableRow>
 
         <TextView
             android:id="@+id/textViewExpenseName"
@@ -34,22 +34,25 @@
             android:layout_weight="2"
             android:textSize="20sp"
             android:text="@string/select_date"/>
-    </LinearLayout>
-
+            </TableRow>
     <!-- Delete button below the expense details -->
-    <Button
-        android:id="@+id/deleteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/delete"
-        android:layout_marginTop="10dp"/>
+        <TableRow>
+            <Button
+                android:id="@+id/deleteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete"
+                android:layout_margin="15dp"
+            />
 
     <!-- Show details button below the expense details -->
-    <Button
-        android:id="@+id/showDetailsButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/show_details"
-        android:layout_marginTop="10dp" />
+            <Button
+                android:id="@+id/showDetailsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/show_details"
+                android:layout_margin="15dp" />
+            </TableRow>
+    </TableLayout>
 </LinearLayout>
 
