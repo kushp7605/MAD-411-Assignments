@@ -2,6 +2,8 @@ package com.example.kushpatel_0859776_androidassignments
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         val editTextExpenseAmount = findViewById<EditText>(R.id.editTextExpenseAmount)
         val buttonAddExpense = findViewById<Button>(R.id.buttonAddExpense)
         val textViewDate = findViewById<TextView>(R.id.textViewExpenseDate)
+        val btnFinancialTips = findViewById<Button>(R.id.buttonFinancialTips)
         recyclerView = findViewById(R.id.recyclerView)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -83,6 +86,12 @@ class MainActivity : AppCompatActivity() {
 
             editTextExpenseName.text.clear()
             editTextExpenseAmount.text.clear()
+        }
+
+        btnFinancialTips.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://www.cibc.com/en/imperial-service/insights.html")
+            startActivity(intent)
         }
     }
 
