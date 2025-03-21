@@ -10,14 +10,11 @@
     android:padding="25dp"
     tools:context=".MainActivity">
 
-    <!-- Title of the app -->
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+    <!-- Fragment Container for HeaderFragment -->
+    <FrameLayout
+        android:id="@+id/fragmentHeaderContainer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/expense_tracker"
-        android:textSize="30sp"
-        android:textStyle="bold"
         android:paddingTop="70dp"/>
 
     <!-- Input field for expense name -->
