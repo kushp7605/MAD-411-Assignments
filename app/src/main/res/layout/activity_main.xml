@@ -15,20 +15,20 @@
         android:id="@+id/fragmentHeaderContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="70dp"/>
+        android:paddingTop="50dp"/>
 
     <!-- Input field for expense name -->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/expense_name"
-        android:paddingTop="30dp">
+        android:paddingTop="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextExpenseName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"/>
+            android:textSize="15sp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Input field for expense amount -->
@@ -36,15 +36,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/expense_amount"
-        android:paddingTop="30dp">
+        android:paddingTop="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextExpenseAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal"
-            android:textSize="20sp"
-            android:padding="15dp"/>
+            android:textSize="15sp"
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -53,8 +53,8 @@
         android:layout_height="wrap_content"
         android:text="Select Date"
         android:textSize="18sp"
-        android:padding="10dp"
-        android:layout_marginTop="30dp"/>
+        android:padding="5dp"
+        android:layout_marginTop="15dp"/>
 
 
     <com.google.android.material.button.MaterialButton
@@ -62,22 +62,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_expense"
-        android:textSize="20sp"
-        android:padding="15dp"
-        android:layout_marginTop="30dp"/>
+        android:textSize="15sp"
+        android:padding="10dp"
+        android:layout_marginTop="10dp"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonFinancialTips"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Financial Tips"
-        android:layout_marginTop="20dp" />
+
 
     <!-- RecyclerView to display the list of expenses -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="270sp"
         android:paddingTop="15dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonFinancialTips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Financial Tips"
+        android:layout_marginTop="20dp"
+        />
+
+    <FrameLayout
+        android:id="@+id/fragmentFooterContainer"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        />
 
 </LinearLayout>
