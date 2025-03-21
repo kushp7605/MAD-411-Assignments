@@ -23,17 +23,26 @@ import java.util.Calendar
 data class Expense(val name: String, val amount: Double, val date: String)
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var headerFragment: HeaderFragment
+    private lateinit var footerFragment: FooterFragment
     private lateinit var recyclerView: RecyclerView
     private lateinit var expenseAdapter: ExpenseAdapter
     private val expenseList = mutableListOf<Expense>()
 
-    @SuppressLint("MissingInflatedId", "NotifyDataSetChanged", "SetTextI18n")
+    @SuppressLint("MissingInflatedId", "NotifyDataSetChanged", "SetTextI18n", "CommitTransaction")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
         Log.d("MainActivityLifecycle", "onCreate called")
 
+        headerFragment = HeaderFragment()
+        footerFragment = FooterFragment()
+
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.add(R.id.fragmentHeaderContainer, headerFragment)
+        fragmentTransaction.add(R.id.fragmentFooterContainer, footerFragment)
+        fragmentTransaction.commit()
 
         val editTextExpenseName = findViewById<EditText>(R.id.editTextExpenseName)
         val editTextExpenseAmount = findViewById<EditText>(R.id.editTextExpenseAmount)
@@ -86,6 +95,8 @@ class MainActivity : AppCompatActivity() {
 
             editTextExpenseName.text.clear()
             editTextExpenseAmount.text.clear()
+
+            footerFragment.updateTotalExpense(amount)
         }
 
         btnFinancialTips.setOnClickListener {
