@@ -1,6 +1,7 @@
 package com.example.kushpatel_0859776_androidassignments
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,8 @@ class ExpenseAdapter(private val expenseList: MutableList<Expense>,
         val textViewExpenseAmount: TextView = itemView.findViewById(R.id.textViewExpenseAmount)
         // TextView for expense date
         val textViewExpenseDate: TextView = itemView.findViewById(R.id.textViewExpenseDate)
+        // Button for showing expense details
+        val showDetailsButton: Button = itemView.findViewById(R.id.showDetailsButton)
         // Button for deleting the expense
         val deleteButton: Button = itemView.findViewById(R.id.deleteButton)
 
@@ -43,6 +46,15 @@ class ExpenseAdapter(private val expenseList: MutableList<Expense>,
         holder.textViewExpenseAmount.text = "$${expense.amount}"
         // Set expense date
         holder.textViewExpenseDate.text = expense.date
+
+        // Set show details button click listener
+        holder.showDetailsButton.setOnClickListener {
+            val intent = Intent(holder.itemView.context, ExpenseDetailsActivity::class.java)
+            intent.putExtra("expense_name", expense.name)
+            intent.putExtra("expense_amount", expense.amount.toString())
+            intent.putExtra("expense_date", expense.date)
+            holder.itemView.context.startActivity(intent)
+        }
         // Set delete button click listener
         holder.deleteButton.setOnClickListener { onDeleteButton(position) }
     }
