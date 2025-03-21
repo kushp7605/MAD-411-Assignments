@@ -69,6 +69,13 @@
         android:padding="15dp"
         android:layout_marginTop="30dp"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonFinancialTips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Financial Tips"
+        android:layout_marginTop="20dp" />
+
     <!-- RecyclerView to display the list of expenses -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
