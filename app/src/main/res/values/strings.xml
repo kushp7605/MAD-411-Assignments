@@ -7,4 +7,11 @@
     <string name="delete">Delete</string>
     <string name="date">Date</string>
     <string name="select_date">Select Date</string>
+    <string name="back_home">Back Home</string>
+    <string name="show_details">Show Details</string>
+    <string name="Expense_Tracker">Expense Tracker</string>
+    <string name="total_expense_0_00">Total Expense: $0.00</string>
+    <string name="total_expense_totalexpense">Total Expense: $totalExpense</string>
+    <string name="total_expense_totalExpense">Total Expense: $totalExpense</string>
+    <string name="Total_Expense_0_00">Total Expense: $0.00</string>
 </resources>
