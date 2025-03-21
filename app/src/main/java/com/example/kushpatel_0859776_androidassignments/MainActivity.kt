@@ -40,8 +40,8 @@ class MainActivity : AppCompatActivity() {
         footerFragment = FooterFragment()
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.add(R.id.fragmentHeaderContainer, headerFragment)
-        fragmentTransaction.add(R.id.fragmentFooterContainer, footerFragment)
+        fragmentTransaction.replace(R.id.fragmentHeaderContainer, headerFragment)
+        fragmentTransaction.replace(R.id.fragmentFooterContainer, footerFragment)
         fragmentTransaction.commit()
 
         val editTextExpenseName = findViewById<EditText>(R.id.editTextExpenseName)
