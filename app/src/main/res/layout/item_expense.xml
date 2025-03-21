@@ -43,5 +43,13 @@
         android:layout_height="wrap_content"
         android:text="@string/delete"
         android:layout_marginTop="10dp"/>
+
+    <!-- Show details button below the expense details -->
+    <Button
+        android:id="@+id/showDetailsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/show_details"
+        android:layout_marginTop="10dp" />
 </LinearLayout>
 
