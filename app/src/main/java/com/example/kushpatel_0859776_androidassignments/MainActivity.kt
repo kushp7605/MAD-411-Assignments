@@ -43,6 +43,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Log.d("MainActivityLifecycle", "onCreate called")
 
+        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        expenseAdapter = ExpenseAdapter(expenseList) { position ->
+            deleteExpense(position)
+        }
+        recyclerView.adapter = expenseAdapter
+
+        // Load previously saved expenses
+        expenseList.addAll(loadExpensesFromFile(this))
+
+        // Notify the adapter about data change
+        expenseAdapter.notifyDataSetChanged()
+
         headerFragment = HeaderFragment()
         footerFragment = FooterFragment()
 
@@ -56,14 +69,6 @@ class MainActivity : AppCompatActivity() {
         val buttonAddExpense = findViewById<Button>(R.id.buttonAddExpense)
         val textViewDate = findViewById<TextView>(R.id.textViewExpenseDate)
         val btnFinancialTips = findViewById<Button>(R.id.buttonFinancialTips)
-        recyclerView = findViewById(R.id.recyclerView)
-
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        expenseAdapter = ExpenseAdapter(expenseList) { position ->
-            expenseList.removeAt(position)
-            expenseAdapter.notifyItemRemoved(position)
-        }
-        recyclerView.adapter = expenseAdapter
 
         textViewDate.setOnClickListener {
             val calendar = Calendar.getInstance()
@@ -100,6 +105,9 @@ class MainActivity : AppCompatActivity() {
             expenseList.add(Expense(name, amount, date))
             expenseAdapter.notifyItemInserted(expenseList.size - 1)
 
+            // Save to file after adding
+            saveExpensesToFile(this, expenseList)
+
             editTextExpenseName.text.clear()
             editTextExpenseAmount.text.clear()
 
@@ -111,6 +119,28 @@ class MainActivity : AppCompatActivity() {
             intent.data = Uri.parse("https://www.cibc.com/en/imperial-service/insights.html")
             startActivity(intent)
         }
+    }
+
+    private fun deleteExpense(position: Int) {
+        val expenseAmount = expenseList[position].amount
+        expenseList.removeAt(position)
+        expenseAdapter.notifyItemRemoved(position)
+        expenseAdapter.notifyItemRangeChanged(position, expenseList.size)
+
+        // Update the total expense in the footer
+        if (expenseList.isEmpty()) {
+            // Set total expense to 0
+            Log.d("ExpenseDeletion", "All expenses deleted. Setting total to 0.")
+            footerFragment.updateTotalExpense(-expenseAmount)
+        } else {
+            // Subtract the deleted expense amount
+            Log.d("ExpenseDeletion", "Expense deleted")
+            footerFragment.updateTotalExpense(-expenseAmount)
+        }
+
+        // Save update list to file
+        saveExpensesToFile(this, expenseList)
+        Log.d("ExpenseDeletion", "Expenses saved to file successfully")
     }
 
     // Save expenses to a JSON file
@@ -131,16 +161,18 @@ class MainActivity : AppCompatActivity() {
         val expenseList = mutableListOf<Expense>()
         try {
             val file = File(context.filesDir, FILE_NAME)
-            if (file.exists()) return expenseList
-
-            val json = file.readText()
-            val type = object : TypeToken<List<Expense>>() {}.type
-            val loadedExpenseList: List<Expense> = Gson().fromJson(json, type)
-            expenseList.addAll(loadedExpenseList)
-
-            Log.d("FileIOStorage", "Expenses loaded from file successfully")
-        } catch (e: FileNotFoundException) {
-            Log.e("FileIOStorage", "File not found: ${e.message}")
+            if (!file.exists()) {
+                // File doesn't exist, so create it
+                file.createNewFile()
+                Log.d("FileIOStorage", "File created: $FILE_NAME")
+            } else {
+                // Read from the file if it exists
+                val json = file.readText()
+                val type = object : TypeToken<List<Expense>>() {}.type
+                val loadedExpenses: List<Expense> = Gson().fromJson(json, type)
+                expenseList.addAll(loadedExpenses)
+                Log.d("FileIOStorage", "Expenses loaded from file successfully")
+            }
         } catch (e: Exception) {
             Log.e("FileIOStorage", "Error loading expenses from file: ${e.message}")
         }
