@@ -2,6 +2,7 @@ package com.example.kushpatel_0859776_androidassignments
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -17,6 +18,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kushpatel_0859776_androidassignment6.R
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.File
+import java.io.FileNotFoundException
 import java.util.Calendar
 
 // Data class representing an expense with a name and amount
@@ -106,6 +111,40 @@ class MainActivity : AppCompatActivity() {
             intent.data = Uri.parse("https://www.cibc.com/en/imperial-service/insights.html")
             startActivity(intent)
         }
+    }
+
+    // Save expenses to a JSON file
+    private fun saveExpensesToFile(context: Context, expenseList: List<Expense>) {
+        try {
+            val json = Gson().toJson(expenseList)
+            context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE).use { output ->
+                output.write(json.toByteArray())
+            }
+            Log.d("FileIOStorage", "Expenses saved to file successfully")
+        } catch (e: Exception) {
+            Log.e("FileIOStorage", "Error saving expenses to file: ${e.message}")
+        }
+    }
+
+    // Load Expenses from the file
+    private fun loadExpensesFromFile(context: Context): List<Expense> {
+        val expenseList = mutableListOf<Expense>()
+        try {
+            val file = File(context.filesDir, FILE_NAME)
+            if (file.exists()) return expenseList
+
+            val json = file.readText()
+            val type = object : TypeToken<List<Expense>>() {}.type
+            val loadedExpenseList: List<Expense> = Gson().fromJson(json, type)
+            expenseList.addAll(loadedExpenseList)
+
+            Log.d("FileIOStorage", "Expenses loaded from file successfully")
+        } catch (e: FileNotFoundException) {
+            Log.e("FileIOStorage", "File not found: ${e.message}")
+        } catch (e: Exception) {
+            Log.e("FileIOStorage", "Error loading expenses from file: ${e.message}")
+        }
+        return expenseList
     }
 
     override fun onStart() {
