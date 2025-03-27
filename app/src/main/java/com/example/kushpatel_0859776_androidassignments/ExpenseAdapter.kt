@@ -12,7 +12,7 @@ import com.example.kushpatel_0859776_androidassignment6.R
 
 // Adapter class for managing a list of expenses in a RecyclerView
 class ExpenseAdapter(private val expenseList: MutableList<Expense>,
-    private val onDeleteButton: (Int) -> Unit) :
+    private val onDeleteExpense: (Int) -> Unit) :
     RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
 
     // ViewHolder class for holding the views of each expense item
@@ -56,7 +56,9 @@ class ExpenseAdapter(private val expenseList: MutableList<Expense>,
             holder.itemView.context.startActivity(intent)
         }
         // Set delete button click listener
-        holder.deleteButton.setOnClickListener { onDeleteButton(position) }
+        holder.deleteButton.setOnClickListener {
+            onDeleteExpense(position)
+        }
     }
 
     // Returns the total number of items in the list
