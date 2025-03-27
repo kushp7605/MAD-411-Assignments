@@ -22,6 +22,8 @@ import java.util.Calendar
 // Data class representing an expense with a name and amount
 data class Expense(val name: String, val amount: Double, val date: String)
 
+private const val FILE_NAME = "expenses.txt"
+
 class MainActivity : AppCompatActivity() {
     private lateinit var headerFragment: HeaderFragment
     private lateinit var footerFragment: FooterFragment
