@@ -15,7 +15,7 @@
         android:id="@+id/fragmentHeaderContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="50dp"/>
+        android:paddingTop="70dp"/>
 
     <!-- Input field for expense name -->
     <com.google.android.material.textfield.TextInputLayout
@@ -28,7 +28,8 @@
             android:id="@+id/editTextExpenseName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"/>
+            android:textSize="15sp"
+            android:layout_marginTop="15dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Input field for expense amount -->
@@ -42,6 +43,7 @@
             android:id="@+id/editTextExpenseAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:inputType="numberDecimal"
             android:textSize="15sp"
             />
@@ -72,21 +74,21 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="270sp"
-        android:paddingTop="15dp"/>
+        android:layout_height="240dp"
+        android:layout_weight="1"
+        android:paddingTop="15dp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonFinancialTips"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Financial Tips"
-        android:layout_marginTop="20dp"
-        />
+        android:layout_marginBottom="10dp"
+        android:text="Financial Tips" />
 
     <FrameLayout
         android:id="@+id/fragmentFooterContainer"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="70dp"
         />
-
 </LinearLayout>
