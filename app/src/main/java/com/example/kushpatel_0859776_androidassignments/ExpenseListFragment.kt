@@ -50,6 +50,8 @@ class ExpenseListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+//        val NavController = findNavController()
+
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         expenseAdapter = ExpenseAdapter(expenseList) { position ->
@@ -64,7 +66,11 @@ class ExpenseListFragment : Fragment() {
         textViewDate = view.findViewById(R.id.textViewExpenseDate)
         btnFinancialTips = view.findViewById(R.id.buttonFinancialTips)
 
-        footerFragment = FooterFragment()
+        // Replace the FooterFragment into the footer container
+        childFragmentManager.beginTransaction()
+            .replace(R.id.fragmentHeaderContainer, HeaderFragment())
+            .replace(R.id.fragmentFooterContainer, FooterFragment())
+            .commit()
 
         // Load previously saved expenses
         expenseList.addAll(loadExpensesFromFile(requireContext()))
