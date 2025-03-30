@@ -22,7 +22,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.kushpatel_0859776_androidassignments.ExpenseDetailsActivity" />
+        <activity android:name="com.example.kushpatel_0859776_androidassignments.ExpenseDetailsFragment"
+            tools:ignore="Instantiatable" />
     </application>
 
 </manifest>
