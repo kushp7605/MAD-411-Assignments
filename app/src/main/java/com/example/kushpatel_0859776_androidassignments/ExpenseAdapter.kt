@@ -2,18 +2,24 @@ package com.example.kushpatel_0859776_androidassignments
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kushpatel_0859776_androidassignment6.R
 
 // Adapter class for managing a list of expenses in a RecyclerView
-class ExpenseAdapter(private val expenseList: MutableList<Expense>,
-    private val onDeleteExpense: (Int) -> Unit) :
-    RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
+class ExpenseAdapter(
+    private val expenseList: MutableList<Expense>,
+    private val onDeleteExpense: (Int) -> Unit,
+    private val navController: NavController
+) : RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder>() {
 
     // ViewHolder class for holding the views of each expense item
     class ExpenseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -27,7 +33,6 @@ class ExpenseAdapter(private val expenseList: MutableList<Expense>,
         val showDetailsButton: Button = itemView.findViewById(R.id.showDetailsButton)
         // Button for deleting the expense
         val deleteButton: Button = itemView.findViewById(R.id.deleteButton)
-
     }
 
     // Inflates the item layout and creates the ViewHolder
@@ -49,14 +54,16 @@ class ExpenseAdapter(private val expenseList: MutableList<Expense>,
 
         // Set show details button click listener
         holder.showDetailsButton.setOnClickListener {
-            val intent = Intent(holder.itemView.context, ExpenseDetailsActivity::class.java)
-            intent.putExtra("expense_name", expense.name)
-            intent.putExtra("expense_amount", expense.amount.toString())
-            intent.putExtra("expense_date", expense.date)
-            holder.itemView.context.startActivity(intent)
+            val bundle = Bundle()
+            bundle.putString("expense_name", expense.name)
+            bundle.putString("expense_amount", expense.amount.toString())
+            bundle.putString("expense_date", expense.date)
+            // Navigate using the bundle
+            navController.navigate(R.id.action_expenseListFragment_to_expenseDetailsFragment, bundle)
         }
         // Set delete button click listener
         holder.deleteButton.setOnClickListener {
+            Log.d("ExpenseAdapter", "Delete button clicked for position: $position")
             onDeleteExpense(position)
         }
     }
