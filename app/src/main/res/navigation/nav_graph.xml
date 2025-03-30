@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:id="@+id/nav_graph.xml">
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/expenseListFragment"
+    tools:ignore="InvalidNavigation">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <fragment
+        android:id="@+id/expenseListFragment"
+        android:name="com.example.kushpatel_0859776_androidassignments.ExpenseListFragment"
+        android:label="Expense List"
+        tools:layout="@layout/fragment_expense_list">
+        <action
+            android:id="@+id/action_expenseListFragment_to_expenseDetailsFragment"
+            app:destination="@id/expenseDetailsFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/expenseDetailsFragment"
+        android:name="com.example.kushpatel_0859776_androidassignments.ExpenseDetailsFragment"
+        android:label="Expense Details"
+        tools:layout="@layout/fragment_expense_details">
+    </fragment>
+</navigation>
