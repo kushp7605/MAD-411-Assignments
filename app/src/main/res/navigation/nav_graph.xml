@@ -10,7 +10,7 @@
         android:name="com.example.kushpatel_0859776_androidassignments.ExpenseListFragment"
         android:label="Expense List"
         tools:layout="@layout/fragment_expense_list">
-        <action
+        <action0
             android:id="@+id/action_expenseListFragment_to_expenseDetailsFragment"
             app:destination="@id/expenseDetailsFragment"/>
     </fragment>
