@@ -14,6 +14,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kushpatel_0859776_androidassignment6.R
@@ -50,13 +52,21 @@ class ExpenseListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val NavController = findNavController()
+        requireActivity().supportFragmentManager.commit {
+            replace(R.id.fragmentHeaderContainer, HeaderFragment())
+        }
+
+        // Added  footerfragment dynamically
+        footerFragment = FooterFragment()
+        requireActivity().supportFragmentManager.commit {
+            replace(R.id.fragmentFooterContainer, footerFragment)
+        }
+
+        val navController = findNavController()
 
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        expenseAdapter = ExpenseAdapter(expenseList) { position ->
-            deleteExpense(position)
-        }
+        expenseAdapter = ExpenseAdapter(expenseList, { position -> deleteExpense(position) }, navController)
         recyclerView.adapter = expenseAdapter
 
         // Initialize UI Elements
@@ -66,15 +76,14 @@ class ExpenseListFragment : Fragment() {
         textViewDate = view.findViewById(R.id.textViewExpenseDate)
         btnFinancialTips = view.findViewById(R.id.buttonFinancialTips)
 
-        // Replace the FooterFragment into the footer container
-        childFragmentManager.beginTransaction()
-            .replace(R.id.fragmentHeaderContainer, HeaderFragment())
-            .replace(R.id.fragmentFooterContainer, FooterFragment())
-            .commit()
 
         // Load previously saved expenses
-        expenseList.addAll(loadExpensesFromFile(requireContext()))
-        expenseAdapter.notifyDataSetChanged()
+        if (expenseList.isEmpty()) {
+            expenseList.addAll(loadExpensesFromFile(requireContext()))
+            expenseAdapter.notifyDataSetChanged()
+        }
+
+        updateFooterTotalExpense()
 
         // Date Picker Dialog
         textViewDate.setOnClickListener {
@@ -99,14 +108,13 @@ class ExpenseListFragment : Fragment() {
                 editTextExpenseName.error = "Please enter an expense name"
                 return@setOnClickListener
             }
-
             if (amount == null || amount <= 0) {
                 editTextExpenseAmount.error = "Please enter a valid amount"
                 return@setOnClickListener
             }
 
             if (date == "Select Date" || date.isEmpty()) {
-                textViewDate.setTextColor(resources.getColor(android.R.color.holo_red_dark))
+                textViewDate.error = "Please select a date"
                 return@setOnClickListener
             }
 
@@ -119,7 +127,7 @@ class ExpenseListFragment : Fragment() {
             editTextExpenseName.text.clear()
             editTextExpenseAmount.text.clear()
 
-            footerFragment.updateTotalExpense(amount)
+            updateFooterTotalExpense()
         }
 
         // Open Financial Tips Page
@@ -129,8 +137,14 @@ class ExpenseListFragment : Fragment() {
         }
     }
 
+    // Footer Fragment for total expense amount
+    private fun updateFooterTotalExpense() {
+        val total = expenseList.sumOf { it.amount }
+        footerFragment.updateTotalExpense(total)
+    }
+
     private fun deleteExpense(position: Int) {
-        val expenseAmount = expenseList[position].amount
+        expenseList[position].amount
         expenseList.removeAt(position)
         expenseAdapter.notifyItemRemoved(position)
         expenseAdapter.notifyItemRangeChanged(position, expenseList.size)
@@ -139,11 +153,11 @@ class ExpenseListFragment : Fragment() {
         if (expenseList.isEmpty()) {
             // Set total expense to 0
             Log.d("ExpenseDeletion", "All expenses deleted. Setting total to 0.")
-            footerFragment.updateTotalExpense(-expenseAmount)
+            updateFooterTotalExpense()
         } else {
             // Subtract the deleted expense amount
             Log.d("ExpenseDeletion", "Expense deleted")
-            footerFragment.updateTotalExpense(-expenseAmount)
+            updateFooterTotalExpense()
         }
 
         // Save update list to file
