@@ -35,7 +35,7 @@
             android:textSize="20sp"
             android:text="@string/select_date"/>
             </TableRow>
-    <!-- Delete button below the expense details -->
+
         <TableRow>
             <Button
                 android:id="@+id/deleteButton"
@@ -45,7 +45,6 @@
                 android:layout_margin="15dp"
             />
 
-    <!-- Show details button below the expense details -->
             <Button
                 android:id="@+id/showDetailsButton"
                 android:layout_width="wrap_content"
