@@ -49,6 +49,30 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <Switch
+        android:id="@+id/switchCurrencyConversion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enable Currency Conversion"
+        android:layout_marginTop="15dp" />
+
+    <Spinner
+        android:id="@+id/spinnerCurrency"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/textViewConvertedCost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Converted Cost: "
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:paddingTop="5dp"
+        android:layout_marginTop="10dp"/>
+
     <TextView
         android:id="@+id/textViewExpenseDate"
         android:layout_width="wrap_content"
