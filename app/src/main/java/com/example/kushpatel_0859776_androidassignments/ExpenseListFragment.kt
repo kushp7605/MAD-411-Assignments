@@ -13,6 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
+import android.widget.Switch
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -41,6 +43,12 @@ class ExpenseListFragment : Fragment() {
     private lateinit var textViewDate: TextView
     private lateinit var btnFinancialTips: Button
     private lateinit var footerFragment: FooterFragment
+
+    // Currency Conversion
+    private lateinit var spinnerCurrency: Spinner
+    private lateinit var textViewConvertedAmount: TextView
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private lateinit var switchConvertCurrency: Switch
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,6 +85,9 @@ class ExpenseListFragment : Fragment() {
         textViewDate = view.findViewById(R.id.textViewExpenseDate)
         btnFinancialTips = view.findViewById(R.id.buttonFinancialTips)
 
+        switchConvertCurrency = view.findViewById(R.id.switchCurrencyConversion)
+        spinnerCurrency = view.findViewById(R.id.spinnerCurrency)
+        textViewConvertedAmount = view.findViewById(R.id.textViewConvertedCost)
 
         // Load previously saved expenses
         if (expenseList.isEmpty()) {
