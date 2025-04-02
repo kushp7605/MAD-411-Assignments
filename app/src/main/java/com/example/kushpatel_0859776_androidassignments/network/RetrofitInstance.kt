@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    private const val BASE_URL = "https://api.exchangerate-api.com/v4/latest/"
+    private const val BASE_URL = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/"
 
     val api: CurrencyApiService by lazy {
         Retrofit.Builder()
