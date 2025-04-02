@@ -1,6 +1,7 @@
 package com.example.kushpatel_0859776_androidassignments.network
 
 import android.icu.util.Currency
+import com.example.kushpatel_0859776_androidassignments.models.ExchangeRateResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
