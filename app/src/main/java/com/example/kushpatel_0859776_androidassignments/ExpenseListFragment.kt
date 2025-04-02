@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.icu.util.Currency
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -25,7 +26,7 @@ import java.io.File
 import java.util.Calendar
 
 // Data class representing an expense with a name and amount
-data class Expense(val name: String, val amount: Double, val date: String)
+data class Expense(val name: String, val amount: Double, val date: String, val currency: Currency, val convertedCost: Double)
 
 private const val FILE_NAME = "expenses.txt"
 
