@@ -11,6 +11,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
@@ -89,6 +91,11 @@ class ExpenseListFragment : Fragment() {
         spinnerCurrency = view.findViewById(R.id.spinnerCurrency)
         textViewConvertedAmount = view.findViewById(R.id.textViewConvertedCost)
 
+        val currencyOptions = listOf("USD", "EUR", "GBP", "AUD", "CAD", "INR")
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, currencyOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerCurrency.adapter = adapter
+
         // Load previously saved expenses
         if (expenseList.isEmpty()) {
             expenseList.addAll(loadExpensesFromFile(requireContext()))
@@ -146,6 +153,30 @@ class ExpenseListFragment : Fragment() {
         btnFinancialTips.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.cibc.com/en/imperial-service/insights.html"))
             startActivity(intent)
+        }
+
+        // Switch for Currency Conversion
+        switchConvertCurrency.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                convertExpensesToCurrency(spinnerCurrency.selectedItem.toString())
+            } else {
+                textViewConvertedAmount.text = ""
+            }
+        }
+
+        // Spinner for Currency
+        spinnerCurrency.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if(switchConvertCurrency.isChecked) {
+                    convertExpensesToCurrency(spinnerCurrency.selectedItem.toString())
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
