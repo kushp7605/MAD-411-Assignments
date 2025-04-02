@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.icu.util.Currency
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -25,6 +24,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kushpatel_0859776_androidassignment6.R
+import com.example.kushpatel_0859776_androidassignments.models.ExchangeRatesResponse
 import com.example.kushpatel_0859776_androidassignments.network.RetrofitInstance
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -36,7 +36,7 @@ import java.io.File
 import java.util.Calendar
 
 // Data class representing an expense with a name and amount
-data class Expense(val name: String, val amount: Double, val date: String, val currency: Currency, val convertedCost: Double)
+data class Expense(val name: String, val amount: Double, val date: String, val currency: String, val convertedCost: Double)
 
 private const val FILE_NAME = "expenses.txt"
 
@@ -57,6 +57,7 @@ class ExpenseListFragment : Fragment() {
     private lateinit var textViewConvertedAmount: TextView
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     private lateinit var switchConvertCurrency: Switch
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -141,7 +142,7 @@ class ExpenseListFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            expenseList.add(Expense(name, amount, date, Currency.getInstance("CAD"), amount))
+            expenseList.add(Expense(name, amount, date, "cad", amount))
             expenseAdapter.notifyItemInserted(expenseList.size - 1)
 
             // Save to file
@@ -162,9 +163,16 @@ class ExpenseListFragment : Fragment() {
         // Switch for Currency Conversion
         switchConvertCurrency.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                convertExpensesToCurrency(spinnerCurrency.selectedItem.toString())
+                val selectedCurrency = spinnerCurrency.selectedItem?.toString() ?: "cad"
+                convertExpensesToCurrency(selectedCurrency)
             } else {
-                textViewConvertedAmount.text = ""
+                // Reset to original amounts in CAD
+                for (i in expenseList.indices) {
+                    val expense = expenseList[i]
+                    expenseList[i] = Expense(expense.name, expense.amount, expense.date, "cad", expense.amount)
+                }
+                expenseAdapter.notifyDataSetChanged()
+                textViewConvertedAmount.text = "Converted Cost: ${expenseList.sumOf { it.amount }} CAD"
             }
         }
 
@@ -177,7 +185,8 @@ class ExpenseListFragment : Fragment() {
                 id: Long
             ) {
                 if(switchConvertCurrency.isChecked) {
-                    convertExpensesToCurrency(spinnerCurrency.selectedItem.toString())
+                    val selectedCurrency = spinnerCurrency.selectedItem.toString()
+                    onCurrencySelected(selectedCurrency)
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -186,20 +195,29 @@ class ExpenseListFragment : Fragment() {
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun convertExpensesToCurrency(selectedCurrency: String) {
-        val conversionRates = when (selectedCurrency) {
-            "CAD" -> 1.0
-            "EUR" -> 0.93
-            "USD" -> 0.70
-            "GBP" -> 0.77
-            "INR" -> 85.64
-            else -> 1.0
+        lifecycleScope.launch {
+            try {
+                val exchangeRatesResponse = withContext(Dispatchers.IO) {
+                    // Base Currency is CAD
+                    RetrofitInstance.api.getExchangeRates()
+                }
+
+                val conversionRates = exchangeRatesResponse.cad[selectedCurrency.lowercase()] ?: 1.0
+
+                for(i in expenseList.indices) {
+                    val expense = expenseList[i]
+                    expenseList[i] = Expense(expense.name, expense.amount, expense.date, selectedCurrency, expense.amount * conversionRates)
+
+                }
+
+                expenseAdapter.notifyDataSetChanged()
+
+                val totalAmountConverted = expenseList.sumOf { it.convertedCost }
+                textViewConvertedAmount.text = "Converted Cost: $$totalAmountConverted $selectedCurrency"
+            } catch (e: Exception) {
+                Snackbar.make(requireView(), "Error: ${e.message}", Snackbar.LENGTH_SHORT).show()
+            }
         }
-
-        val totalAmount = expenseList.sumOf { it.amount }
-        val convertedAmount = totalAmount * conversionRates
-
-        expenseAdapter.notifyDataSetChanged()
-        textViewConvertedAmount.text = "Converted Cost: $$convertedAmount $selectedCurrency"
     }
 
     private fun fetchCurrencies() {
@@ -209,20 +227,45 @@ class ExpenseListFragment : Fragment() {
                     RetrofitInstance.api.getCurrencies()
                 }
 
+                Log.d("CurrencyFetch", "Fetched currencies: $currencies")
+
                 if(currencies.isNotEmpty()) {
                     val currencyList = currencies.keys.toList()
                     val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, currencyList)
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinnerCurrency.adapter = adapter
 
-                    // Set "CAD" as default
-                    val index = currencyList.indexOf("CAD")
-                    if(index != -1) {
-                        spinnerCurrency.setSelection(index)
+                    val defaultPosition = currencyList.indexOf("cad")
+                    if (defaultPosition != -1) {
+                        spinnerCurrency.setSelection(defaultPosition)
                     }
-                } else {
-                    Snackbar.make(requireView(), "No currencies found", Snackbar.LENGTH_SHORT).show()
                 }
+            } catch (e: Exception) {
+                Log.e("CurrencyFetch", "Error fetching currencies: ${e.message}")
+                Snackbar.make(requireView(), "Error: ${e.message}", Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
+    private fun onCurrencySelected(newCurrency: String) {
+        lifecycleScope.launch {
+            try {
+                val exchangeRatesResponse = withContext(Dispatchers.IO) {
+                    RetrofitInstance.api.getExchangeRates()
+                }
+
+                val conversionRate = exchangeRatesResponse.cad[newCurrency.lowercase()] ?: 1.0
+
+                for (i in expenseList.indices) {
+                    val expense = expenseList[i]
+                    expenseList[i] = Expense(expense.name, expense.amount, expense.date, newCurrency, expense.amount * conversionRate)
+                }
+
+                expenseAdapter.notifyDataSetChanged()
+
+                val convertedAmount = expenseList.sumOf { it.convertedCost }
+                textViewConvertedAmount.text = "Converted Cost: $$convertedAmount $newCurrency"
             } catch (e: Exception) {
                 Snackbar.make(requireView(), "Error: ${e.message}", Snackbar.LENGTH_SHORT).show()
             }
