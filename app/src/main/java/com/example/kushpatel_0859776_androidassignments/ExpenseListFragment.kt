@@ -91,7 +91,8 @@ class ExpenseListFragment : Fragment() {
         spinnerCurrency = view.findViewById(R.id.spinnerCurrency)
         textViewConvertedAmount = view.findViewById(R.id.textViewConvertedCost)
 
-        val currencyOptions = listOf("USD", "EUR", "GBP", "AUD", "CAD", "INR")
+        val currencyOptions = listOf("CAD", "EUR", "GBP", "AUD", "USD", "INR")
+        spinnerCurrency.setSelection(currencyOptions.indexOf("CAD"))
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, currencyOptions)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerCurrency.adapter = adapter
@@ -137,7 +138,7 @@ class ExpenseListFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            expenseList.add(Expense(name, amount, date))
+            expenseList.add(Expense(name, amount, date, Currency.getInstance("CAD"), amount))
             expenseAdapter.notifyItemInserted(expenseList.size - 1)
 
             // Save to file
@@ -178,6 +179,24 @@ class ExpenseListFragment : Fragment() {
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+    }
+
+    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
+    private fun convertExpensesToCurrency(selectedCurrency: String) {
+        val conversionRates = when (selectedCurrency) {
+            "CAD" -> 1.0
+            "EUR" -> 0.93
+            "USD" -> 0.70
+            "GBP" -> 0.77
+            "INR" -> 85.64
+            else -> 1.0
+        }
+
+        val totalAmount = expenseList.sumOf { it.amount }
+        val convertedAmount = totalAmount * conversionRates
+
+        expenseAdapter.notifyDataSetChanged()
+        textViewConvertedAmount.text = "Converted Cost: $$convertedAmount $selectedCurrency"
     }
 
     // Footer Fragment for total expense amount
