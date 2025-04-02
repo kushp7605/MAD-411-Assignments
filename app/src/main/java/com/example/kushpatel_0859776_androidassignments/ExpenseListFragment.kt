@@ -20,12 +20,18 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kushpatel_0859776_androidassignment6.R
+import com.example.kushpatel_0859776_androidassignments.network.RetrofitInstance
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.Calendar
 
@@ -91,11 +97,8 @@ class ExpenseListFragment : Fragment() {
         spinnerCurrency = view.findViewById(R.id.spinnerCurrency)
         textViewConvertedAmount = view.findViewById(R.id.textViewConvertedCost)
 
-        val currencyOptions = listOf("CAD", "EUR", "GBP", "AUD", "USD", "INR")
-        spinnerCurrency.setSelection(currencyOptions.indexOf("CAD"))
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, currencyOptions)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerCurrency.adapter = adapter
+        // Fetch currencies from the API
+        fetchCurrencies()
 
         // Load previously saved expenses
         if (expenseList.isEmpty()) {
@@ -197,6 +200,33 @@ class ExpenseListFragment : Fragment() {
 
         expenseAdapter.notifyDataSetChanged()
         textViewConvertedAmount.text = "Converted Cost: $$convertedAmount $selectedCurrency"
+    }
+
+    private fun fetchCurrencies() {
+        lifecycleScope.launch {
+            try {
+                val currencies = withContext(Dispatchers.IO) {
+                    RetrofitInstance.api.getCurrencies()
+                }
+
+                if(currencies.isNotEmpty()) {
+                    val currencyList = currencies.keys.toList()
+                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, currencyList)
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinnerCurrency.adapter = adapter
+
+                    // Set "CAD" as default
+                    val index = currencyList.indexOf("CAD")
+                    if(index != -1) {
+                        spinnerCurrency.setSelection(index)
+                    }
+                } else {
+                    Snackbar.make(requireView(), "No currencies found", Snackbar.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Snackbar.make(requireView(), "Error: ${e.message}", Snackbar.LENGTH_SHORT).show()
+            }
+        }
     }
 
     // Footer Fragment for total expense amount
