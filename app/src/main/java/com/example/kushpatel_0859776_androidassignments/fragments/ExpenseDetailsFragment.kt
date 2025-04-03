@@ -43,7 +43,7 @@ class ExpenseDetailsFragment : Fragment() {
         tvAmount.text = "Expense Original Amount: $amount CAD"
         tvDate.text = "Expense Date: $date"
 
-        if (convertedCost != amount && currency != "cad") {
+        if (convertedCost != amount && currency != "CAD") {
             tvAmount.append("\nCurrency Converted Cost: ${getFormattedAmount(convertedCost, currency)}")
         }
 
