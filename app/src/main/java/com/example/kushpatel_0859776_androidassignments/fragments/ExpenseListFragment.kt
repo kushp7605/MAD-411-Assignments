@@ -1,4 +1,4 @@
-package com.example.kushpatel_0859776_androidassignments
+package com.example.kushpatel_0859776_androidassignments.fragments
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -24,9 +24,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kushpatel_0859776_androidassignment6.R
-import com.example.kushpatel_0859776_androidassignments.models.ExchangeRatesResponse
+import com.example.kushpatel_0859776_androidassignments.adapters.ExpenseAdapter
 import com.example.kushpatel_0859776_androidassignments.network.RetrofitInstance
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textview.MaterialTextView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -54,9 +56,9 @@ class ExpenseListFragment : Fragment() {
 
     // Currency Conversion
     private lateinit var spinnerCurrency: Spinner
-    private lateinit var textViewConvertedAmount: TextView
+    private lateinit var textViewConvertedAmount: MaterialTextView
     @SuppressLint("UseSwitchCompatOrMaterialCode")
-    private lateinit var switchConvertCurrency: Switch
+    private lateinit var switchConvertCurrency: MaterialSwitch
 
 
     override fun onCreateView(
@@ -94,9 +96,9 @@ class ExpenseListFragment : Fragment() {
         textViewDate = view.findViewById(R.id.textViewExpenseDate)
         btnFinancialTips = view.findViewById(R.id.buttonFinancialTips)
 
-        switchConvertCurrency = view.findViewById(R.id.switchCurrencyConversion)
+        switchConvertCurrency = view.findViewById<MaterialSwitch>(R.id.switchCurrencyConversion)
         spinnerCurrency = view.findViewById(R.id.spinnerCurrency)
-        textViewConvertedAmount = view.findViewById(R.id.textViewConvertedCost)
+        textViewConvertedAmount = view.findViewById<MaterialTextView>(R.id.textViewConvertedCost)
 
         // Fetch currencies from the API
         fetchCurrencies()
@@ -172,7 +174,7 @@ class ExpenseListFragment : Fragment() {
                     expenseList[i] = Expense(expense.name, expense.amount, expense.date, "cad", expense.amount)
                 }
                 expenseAdapter.notifyDataSetChanged()
-                textViewConvertedAmount.text = "Converted Cost: ${expenseList.sumOf { it.amount }} CAD"
+                textViewConvertedAmount.text = "Converted Cost: ${expenseList.sumOf { it.amount }}"
             }
         }
 
@@ -213,7 +215,7 @@ class ExpenseListFragment : Fragment() {
                 expenseAdapter.notifyDataSetChanged()
 
                 val totalAmountConverted = expenseList.sumOf { it.convertedCost }
-                textViewConvertedAmount.text = "Converted Cost: $$totalAmountConverted $selectedCurrency"
+                textViewConvertedAmount.text = "Converted Cost: $totalAmountConverted ${selectedCurrency.uppercase()}"
             } catch (e: Exception) {
                 Snackbar.make(requireView(), "Error: ${e.message}", Snackbar.LENGTH_SHORT).show()
             }
@@ -265,7 +267,7 @@ class ExpenseListFragment : Fragment() {
                 expenseAdapter.notifyDataSetChanged()
 
                 val convertedAmount = expenseList.sumOf { it.convertedCost }
-                textViewConvertedAmount.text = "Converted Cost: $$convertedAmount $newCurrency"
+                textViewConvertedAmount.text = "Converted Cost: $convertedAmount ${newCurrency.uppercase()}"
             } catch (e: Exception) {
                 Snackbar.make(requireView(), "Error: ${e.message}", Snackbar.LENGTH_SHORT).show()
             }
