@@ -31,19 +31,37 @@ class ExpenseDetailsFragment : Fragment() {
 
         // Retrieve data from arguments
         val name = arguments?.getString("expense_name")
-        val amount = arguments?.getString("expense_amount")
+        val amount = arguments?.getDouble("expense_amount")
         val date = arguments?.getString("expense_date")
+        val currency = arguments?.getString("expense_currency")
+        val convertedCost = arguments?.getDouble("expense_converted_cost") ?: amount
 
         arguments?.clear()
 
         // Set Text Values
         tvName.text = "Expense Name: $name"
-        tvAmount.text = "Expense Amount: $$amount"
+        tvAmount.text = "Expense Original Amount: $amount CAD"
         tvDate.text = "Expense Date: $date"
+
+        if (convertedCost != amount && currency != "cad") {
+            tvAmount.append("\nCurrency Converted Cost: ${getFormattedAmount(convertedCost, currency)}")
+        }
 
         // Navigate back
         btnBackHome.setOnClickListener {
             findNavController().navigateUp()
+        }
+    }
+
+    private fun getFormattedAmount(amount: Double?, currency: String?): String {
+        return when (currency) {
+            "CAD" -> "$${amount}"
+            "ISK" -> "$amount kr"
+            "INR" -> "$amount inr"
+            "JPY" -> "$amount jpy"
+            "RUB" -> "$amount rub"
+            "USD" -> "$amount usd"
+            else -> "$amount $currency".uppercase()
         }
     }
 }
