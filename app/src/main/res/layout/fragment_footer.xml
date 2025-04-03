@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="@string/Total_Expense_0_00"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         />
 </LinearLayout>
