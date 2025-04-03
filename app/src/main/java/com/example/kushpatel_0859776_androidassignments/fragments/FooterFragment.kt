@@ -1,4 +1,4 @@
-package com.example.kushpatel_0859776_androidassignments
+package com.example.kushpatel_0859776_androidassignments.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
