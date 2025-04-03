@@ -1,7 +1,6 @@
-package com.example.kushpatel_0859776_androidassignments
+package com.example.kushpatel_0859776_androidassignments.adapters
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,9 +9,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kushpatel_0859776_androidassignment6.R
+import com.example.kushpatel_0859776_androidassignments.fragments.Expense
 
 // Adapter class for managing a list of expenses in a RecyclerView
 class ExpenseAdapter(
