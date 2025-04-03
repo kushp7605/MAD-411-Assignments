@@ -46,8 +46,15 @@ class ExpenseAdapter(
         val expense = expenseList[position]
         // Set expense name
         holder.textViewExpenseName.text = expense.name
+
         // Set expense amount
-        holder.textViewExpenseAmount.text = "$${expense.amount}"
+        val displayAmount = if (expense.currency != "CAD" && expense.convertedCost != expense.amount) {
+            expense.convertedCost
+        } else {
+            expense.amount
+        }
+        holder.textViewExpenseAmount.text = "$displayAmount ${expense.currency.uppercase()}"
+
         // Set expense date
         holder.textViewExpenseDate.text = expense.date
 
@@ -55,8 +62,11 @@ class ExpenseAdapter(
         holder.showDetailsButton.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("expense_name", expense.name)
-            bundle.putString("expense_amount", expense.amount.toString())
+            bundle.putDouble("expense_amount", expense.amount)
             bundle.putString("expense_date", expense.date)
+            bundle.putString("expense_currency", expense.currency)
+            bundle.putDouble("expense_converted_cost", expense.convertedCost)
+
             // Navigate using the bundle
             navController.navigate(R.id.action_expenseListFragment_to_expenseDetailsFragment, bundle)
         }
