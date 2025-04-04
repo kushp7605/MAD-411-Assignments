@@ -16,6 +16,7 @@ recyclerview = "1.4.0"
 roomCompiler = "2.5.0"
 roomRuntime = "2.6.1"
 navigation = "2.7.6"
+navigationRuntimeKtx = "2.8.9"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,6 +37,7 @@ material-v140 = { module = "com.google.android.material:material", version.ref =
 material-v190 = { module = "com.google.android.material:material", version.ref = "googleMaterial" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
 
 
 [plugins]
