@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/expenseListFragment"
-        android:name="com.example.kushpatel_0859776_androidassignments.ExpenseListFragment"
+        android:name="com.example.kushpatel_0859776_androidassignments.fragments.ExpenseListFragment"
         android:label="Expense List"
         tools:layout="@layout/fragment_expense_list">
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/expenseDetailsFragment"
-        android:name="com.example.kushpatel_0859776_androidassignments.ExpenseDetailsFragment"
+        android:name="com.example.kushpatel_0859776_androidassignments.fragments.ExpenseDetailsFragment"
         android:label="Expense Details"
         tools:layout="@layout/fragment_expense_details">
     </fragment>
