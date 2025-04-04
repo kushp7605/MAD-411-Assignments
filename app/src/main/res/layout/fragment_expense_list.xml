@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:paddingTop="50dp"
     android:padding="25dp"
-    tools:context=".MainActivity">
+    tools:context="com.example.kushpatel_0859776_androidassignments.activities.MainActivity">
 
     <!-- Fragment Container for HeaderFragment -->
     <FrameLayout
@@ -54,7 +54,7 @@
         android:layout_width="360dp"
         android:layout_height="33dp"
         android:layout_marginTop="15dp"
-        android:text="Enable Currency Conversion"
+        android:text="@string/enable_currency_conversion"
         android:textSize="15sp" />
 
     <Spinner
@@ -68,7 +68,7 @@
         android:id="@+id/textViewConvertedCost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Converted Cost: "
+        android:text="@string/converted_cost"
         android:textSize="16sp"
         android:padding="5dp"
         android:textColor="@android:color/black"
@@ -116,7 +116,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:text="Financial Tips" />
+        android:text="@string/financial_tips" />
 
     <FrameLayout
         android:id="@+id/fragmentFooterContainer"
